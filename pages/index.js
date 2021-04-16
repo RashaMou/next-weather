@@ -1,4 +1,6 @@
 import axios from "axios";
+import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import useGeoLocation from "../hooks/useGeoLocation";
@@ -6,6 +8,9 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
     const location = useGeoLocation();
+    const MapWithNoSSR = dynamic(() => import("../components/map"), {
+        ssr: false,
+    });
 
     const [weather, setWeather] = useState(null);
 
@@ -27,24 +32,27 @@ export default function Home() {
     }, []);
 
     return (
-        <div className={styles.container}>
+        <>
             <Head>
                 <title>Create Next App</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <div id="mapid">
+                <MapWithNoSSR
+                    lat={location.coordinates.lat}
+                    lng={location.coordinates.lng}
+                />
 
-            <main className={styles.main}>
-                <div>{weather}</div>
-            </main>
-            <footer className={styles.footer}>
-                <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    🚀 Rasha coded this.
-                </a>
-            </footer>
-        </div>
+                <footer className={styles.footer}>
+                    <a
+                        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        🚀 Rasha coded this.
+                    </a>
+                </footer>
+            </div>
+        </>
     );
 }
