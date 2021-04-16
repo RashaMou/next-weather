@@ -3,6 +3,7 @@ import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import AutocompletePlace from "../components/autocompletePlace";
 import useGeoLocation from "../hooks/useGeoLocation";
 import styles from "../styles/Home.module.css";
 
@@ -13,6 +14,11 @@ export default function Home() {
     });
 
     const [weather, setWeather] = useState(null);
+    const [place, setPlace] = useState(null);
+
+    const handleSelect = (place) => {
+        setPlace(place);
+    };
 
     const getWeather = () => {
         axios
@@ -37,21 +43,21 @@ export default function Home() {
                 <title>Create Next App</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <AutocompletePlace onSelect={() => handleSelect} />
+            {!place && <div>No place selected</div>}
+            {place && (
+                <div>
+                    Info about the place:{" "}
+                    <pre>{JSON.stringify(place, null, 2)}</pre>
+                </div>
+            )}
             <div id="mapid">
                 <MapWithNoSSR
                     lat={location.coordinates.lat}
                     lng={location.coordinates.lng}
                 />
 
-                <footer className={styles.footer}>
-                    <a
-                        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        🚀 Rasha coded this.
-                    </a>
-                </footer>
+                <footer className={styles.footer}>🚀 Rasha coded this.</footer>
             </div>
         </>
     );
