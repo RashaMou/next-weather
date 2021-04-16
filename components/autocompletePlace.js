@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import SearchCity from "./search";
 
 const AutocompletePlace = (props) => {
     const [query, setQuery] = useState("");
@@ -23,6 +24,7 @@ const AutocompletePlace = (props) => {
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=pk.eyJ1IjoicmptaCIsImEiOiJja25qb2ZwbDAwMnExMnVwOHlrc2JnMDA4In0.5jx8qYdXib2SEZh9VXpciw`
             )
             .then((response) => {
+                console.log(response.data.features);
                 setResults(response.data.features);
                 setisLoading(false);
             });
@@ -35,13 +37,12 @@ const AutocompletePlace = (props) => {
 
     return (
         <div className="AutocompletePlace">
-            <input
-                className="AutocompletePlace-input"
-                type="text"
+            <SearchCity
                 value={query}
                 onChange={handleQuery}
-                placeholder="Type an address"
+                showResult={props.weather}
             />
+
             <ul className="AutocompletePlace-results">
                 {results.map((place) => (
                     <li
