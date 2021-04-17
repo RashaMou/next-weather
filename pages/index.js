@@ -43,22 +43,23 @@ export default function Home() {
                 <title>Create Next App</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <AutocompletePlace
-                onSelect={() => handleSelect}
-                weather={weather}
-            />
-            {place && (
-                <div>
-                    Info about the place:{" "}
-                    <pre>{JSON.stringify(place, null, 2)}</pre>
-                </div>
-            )}
-            {weather}
+
             <div id="mapid">
                 <MapWithNoSSR
                     lat={location.coordinates.lat}
                     lng={location.coordinates.lng}
                 />
+                <AutocompletePlace
+                    onSelect={() => handleSelect}
+                    weather={weather}
+                />
+                {place && (
+                    <div>
+                        Info about the place:{" "}
+                        <pre>{JSON.stringify(place, null, 2)}</pre>
+                    </div>
+                )}
+                {weather}
 
                 <footer className={styles.footer}>🚀 Rasha coded this.</footer>
             </div>
